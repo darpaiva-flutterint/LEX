@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LogExtractor
 {
-    internal class Populator
+    internal class EnvUIPopulator
     {
         // This class populates the drop env down list
         public static void populateEnvironment(System.Windows.Forms.ComboBox envList)
@@ -15,7 +15,7 @@ namespace LogExtractor
             envList.Items.Add("QA (3PP)");
             envList.Items.Add("US (3PP)");
             envList.Items.Add("QA (GDK/Stars Studio)");
-            envList.Items.Add("QR (GDK/Stars Studio)");
+            envList.Items.Add("QR (3PP/GDK/Stars Studio)");
             envList.Items.Add("US (GDK/Stars Studio)");
             envList.Items.Add("UAT");
         }
@@ -23,6 +23,11 @@ namespace LogExtractor
         {
             itList.Items.Add("Yes");
             itList.Items.Add("No");
+        }
+        public static void populateMultiLogsBox(System.Windows.Forms.ComboBox multiLog)
+        {
+            multiLog.Items.Add("Yes");
+            multiLog.Items.Add("No");
         }
     }
 }

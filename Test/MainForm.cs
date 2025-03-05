@@ -12,6 +12,8 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using System.Collections;
 using System.IO;
 using System.Reflection;
+using System.Media;
+using LEX;
 
 namespace LogExtractor
 {
@@ -19,6 +21,7 @@ namespace LogExtractor
 
     public partial class MainForm : Form
     {
+        //SoundPlayer player = new SoundPlayer();   // sound player to play sounds upon completed actions
         private AuxMatchFinder matchFinder;
         private ErrorHandler errorHandler;
         string environment;
@@ -26,6 +29,7 @@ namespace LogExtractor
         string tableId;
         string vendorId;
         string itOption;
+        string multiLogSelection;
 
         // Would recommend refactoring these
         public static bool inputError;
@@ -35,8 +39,9 @@ namespace LogExtractor
         {
             InitializeComponent();
             this.FormBorderStyle = FormBorderStyle.FixedSingle;
-            Populator.populateEnvironment(envList);
-            Populator.populateITBox(itList);
+            EnvUIPopulator.populateEnvironment(envList);
+            EnvUIPopulator.populateITBox(itList);
+            EnvUIPopulator.populateMultiLogsBox(multiLog);
             this.matchFinder = new AuxMatchFinder();
             this.errorHandler = new ErrorHandler();
         }
@@ -67,12 +72,13 @@ namespace LogExtractor
             this.Update();
             this.environment = envList.Text;
             this.itOption = itList.Text;
+            this.multiLogSelection = multiLog.Text;
             this.rgToken = rgTokenBox.Text;
             this.tableId = tableBox.Text;
             this.vendorId = vendorBox.Text;
-            this.errorHandler.handleErrors(environment, rgToken, tableId, vendorId);
+            this.errorHandler.handleErrors(environment, rgToken, tableId, vendorId, itOption);
             this.remainingFiles.Text = "Files = ";
-            
+            progressBar.Value = 25;
 
             if (inputError == true)
             {
@@ -81,10 +87,10 @@ namespace LogExtractor
             } else
             {
                 FolderCreator.createFolder(tableId, installationDirectory);
-                progressBar.Value = 25;
-                GatewayExtractor.getGatewayLogs(environment, vendorId, rgToken, tableId, installationDirectory);
                 progressBar.Value = 50;
-                this.matchFinder.copyFiles(tableId, environment, installationDirectory, itOption);
+                GatewayExtractor.getGatewayLogs(environment, vendorId, rgToken, tableId, installationDirectory);
+                progressBar.Value = 75;
+                this.matchFinder.copyAux(tableId, environment, installationDirectory, itOption, multiLogSelection);
                 progressBar.Value = 100;
                 doneLabel.Visible = true;
             }
@@ -92,6 +98,11 @@ namespace LogExtractor
         private void quitButton_Click(object sender, EventArgs e)
         {
             Application.Exit();
+        }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }
