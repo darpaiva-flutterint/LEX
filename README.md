@@ -1,4 +1,5 @@
-## LEX (Log Extractor) is used to copy logs from Network directories and paste them on your local computer.
+## LEX (Log Extractor)
+Used to copy logs from Network directories and paste them on your local computer.
 
 ## Needed to run the application:
 - Windows 10 or above.
