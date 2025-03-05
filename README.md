@@ -7,3 +7,5 @@
 - Visual Studio
 - .NET Framework 4.7.2 or above
 
+- The application is created with C# without the use of any additional Frameworks.
+- The GUI of the application is created using Windows Forms.
